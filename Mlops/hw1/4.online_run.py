@@ -11,7 +11,7 @@ rid = sys.argv[1]
 print(rid)
 print("{}-th row need to be predicted".format(rid))
 
-db_name = "/data/steel.db"
+db_name = "steel.db"
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 c.execute("SELECT * FROM test where rowid = {}".format(rid))

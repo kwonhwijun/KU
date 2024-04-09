@@ -5,12 +5,9 @@ import pickle as pkl
 import database as db
 from sklearn.model_selection import train_test_split
 
-
 db.change_dir()
-
 # Load data from sql
 dat = db.sql2df(db_path="steel.db", table_name = "train")
-
 
 ## train, test split
 from sklearn.model_selection import train_test_split

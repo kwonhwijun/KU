@@ -62,3 +62,25 @@ def sql2df(db_path, table_name):
     conn.close()
 
     return data
+
+def insert_row(db_path, table_name, row) :
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute(f"INSERT INTO {table_name} ")
+    conn.close()
+
+
+def col_name(db_path, table_name) :
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute(f"SELECT * FROM {table_name}")
+    conn.close()
+    return [col[0] for col in c.description]
+
+
+def query(db_path, my_query) :
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute(my_query)
+    conn.close()
+    return c.fetchall()

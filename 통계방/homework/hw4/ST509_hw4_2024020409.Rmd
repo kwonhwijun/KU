@@ -7,6 +7,30 @@ output: pdf_document
 
 
 # 1
+```{r Soft Threshold Operator}
+S <- function(z, lambda){
+    (z-lambda) * (z>lambda) + (z+lambda) * (z<-lambda) # + 0 *(ABS) ~
+}
+
+S(z = 3,lambda = 10)
+```
+
+```{r}
+cd.lasso <- function(x, y, lambda){
+  # centering y and standardizing X
+  z <- scale(x)
+  m <- attr(z, "scaled:center")
+  s <- attr(z, "scaled:sacle")
+  u <- (y-mean(y))
+  beta <- coef(lm(u ~ z - 1)) 
+  r <- u - z %*% beta #initialization
+  
+  
+}
+
+```
+
+
 ```{r}
 getwd()
 ```

@@ -2,6 +2,9 @@ import sqlite3
 import pandas as pd
 import numpy as np
 import inference as inf
+import database as db
+
+db.change_dir()
 
 ## load test dataset
 print("\n\n Load test table...")
@@ -17,7 +20,7 @@ conn.close()
 
 
 pred = inf.inference(dat)
-
+# inference model, trans를 밖으로 빼서 
 
 print("\n\n insert predict table...")
 db_name = "/data/steel.db"

@@ -20,4 +20,3 @@ db.df2sql(df_name = dat, db_path = "steel.db", table_name = "predict") # Insert 
 
 ## print predict table
 db.print_table(db_path="steel.db",table_name = "predict", nrow = 10)
-
