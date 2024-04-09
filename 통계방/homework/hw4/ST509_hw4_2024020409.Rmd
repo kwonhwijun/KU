@@ -1,0 +1,19 @@
+---
+title: "ST509_HW3_2024020409"
+author: "Hwijun Kwon"
+date: "2024-03-29"
+output: pdf_document
+---
+
+
+# 1
+```{r}
+getwd()
+```
+```{r}
+train <- matrix(scan("train.txt"), 500, 51)
+test  <- matrix(scan("test.txt"), 500, 51)
+x <- train[,-51] ; y <- train[,51]
+x.test <- test[,-51]
+y.test <- test[,51]
+```
