@@ -57,7 +57,7 @@ def save_all(engine, loc_list, month_list):
 def loc_code(loc = "seoul"):
     loc_dict = {"seoul": 1}
     import pandas as pd
-    data = pd.read_csv('/Users/hj/Dropbox/KU/RA/법정동코드 전체자료.txt', sep='\t', encoding='cp949')
+    data = pd.read_csv('법정동코드 전체자료.txt', sep='\t', encoding='cp949')
     loc_code_total = data['법정동코드'].astype(str).str[:5]
     all_code = loc_code_total.unique()
     code = [int(i) for i in all_code if i.startswith(str(loc_dict[loc]))]
