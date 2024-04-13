@@ -1,29 +1,26 @@
 ## ----setup, include=FALSE-------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
+## Group Lasso : Update Blockwise CD
 
-## ---- eval = T------------------------------------------------------------------
+# Simulate Data
 set.seed(1); n <- 100; p <- 6 
 x <- matrix(rnorm(n*p, 2, 1), n, p) # predictor
 e <- rnorm(n, 0, 0.5)               # noise
 true.beta <- c(3, -2,-1, 0, 0, 2, 1)
 
-
-## -------------------------------------------------------------------------------
+# Group Structure
 J <- 3; id <- as.list(1:J); id[[1]] <- 1:2; id[[2]] <- 3:4; id[[3]] <- 5:6
 y <- true.beta[1] + x %*% true.beta[-1] + e # response
 
-
-## -------------------------------------------------------------------------------
+# Regularization Parameter
 lambda <- 10
 
-
-## -------------------------------------------------------------------------------
+# Centering
 mx <- apply(x, 2, mean); x <- t(t(x) - mx)
 my <- mean(y)          ; y <- y - my
 
-
-## -------------------------------------------------------------------------------
+# Blockwise Orthonomalization
 z <- x; Qj.list <- lj.list <- as.list(1:J)
 for (j in 1:J){
   idj <- id[[j]]
@@ -32,8 +29,7 @@ for (j in 1:J){
   z[,idj] <- x[,idj,drop = F] %*% Qj %*% diag(1/sqrt(lj)) 
 }
 
-
-## -------------------------------------------------------------------------------
+# Initialization
 beta <- coef(lm(y ~ z - 1))    # initialization
 r <- y - z %*% beta    # full residual
 
@@ -57,25 +53,18 @@ for (i in 1:100){
   } else {beta <- new.beta}
 }
 
-
-## -------------------------------------------------------------------------------
+# Transform back to original scale
 for (j in 1:J){
   beta[id[[j]]] <- Qj.list[[j]] %*% diag(1/sqrt(lj.list[[j]])) %*% beta[id[[j]]]
 }
 
-
-## -------------------------------------------------------------------------------
-beta0 <- my - mx %*% beta
-
-
-## -------------------------------------------------------------------------------
+# Result
+beta0 <- my - mx %*% beta #Intercept
 beta <- c(beta0, beta)
-
-## -------------------------------------------------------------------------------
 print(cbind(beta, true.beta))
 
 
-## ---- echo = F------------------------------------------------------------------
+## Grapical LASSO
 S <- function(z, lambda) {    # set soft-thresholding function
   (z - lambda) * (z > lambda) + (z + lambda) * (z < -lambda) + 0 * (abs(z) <= lambda)
 }

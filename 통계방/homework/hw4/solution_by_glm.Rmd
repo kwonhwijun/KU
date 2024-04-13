@@ -1,0 +1,40 @@
+---
+title: "Solutioin By GLM"
+author: "Hwijun Kwon"
+date: "2024-04-12"
+output: pdf_document
+---
+
+```{r}
+train <- matrix(scan("train.txt"), 500, 51)
+test  <- matrix(scan("test.txt"), 500, 51)
+x <- train[,-51] ; y <- train[,51]
+x.test <- test[,-51] ;  y.test <- test[,51]
+```
+
+```{r}
+library(glmnet)
+lambda_values <-10^seq(-4, -1, length.out =100)
+mse_list <- numeric(length(lambda_values))
+
+for (i in seq_along(lambda_values)) {
+  model <- glmnet(x, y, alpha=0.5, standardize =  F,  lambda=lambda_values[i])
+  y_pred<- predict(model, s=lambda_values[i], newx=x.test)
+  mse_list[i] <- mean((y.test - y_pred)^2)
+}
+
+min_mse_idx <- which.min(mse_list)
+lambda_min <- lambda_values[min_mse_idx]
+min_mse <- mse_list[min_mse_idx]
+
+cat("\nLambda_Min:", lambda_min, "\nMin_MSE:", min_mse)
+
+```
+
+```{r}
+# MSE vs Lambda graph
+plot(lambda_values, mse_list, col = "blue", lwd = 2,
+     xlab = "Lambda", ylab = "Test MSE", main = "Test MSE vs. Lambda")
+points(lambda_min, min_mse, col = "red", pch = 19, cex = 1.5)
+text(lambda_min, min_mse, labels = sprintf("Min MSE at Lambda=%.4f", lambda_min), pos = 4, col = "red")
+```

@@ -1,0 +1,169 @@
+---
+title: "Assignment4"
+author: "Dain"
+date: "2024-04-04"
+output:
+  pdf_document:
+    latex_engine: xelatex
+---
+
+# 1
+## (a)
+
+# In R
+
+```{r}
+train <- matrix(scan("C:/Users/dainj/OneDrive/문서/train.txt"), 500, 51)
+test <- matrix(scan("C:/Users/dainj/OneDrive/문서/test.txt"), 500, 51)
+
+
+x <- train[,-51]
+y <- train[,51]
+
+x.test <- test[,-51]
+y.test <- test[,51]
+```
+
+
+```{r}
+S <- function(z, lambda){ # set soft-thresholding function
+  (z - lambda) * (z > lambda) + (z + lambda) * (z < -lambda) + 0 *
+    (abs(z) <= lambda)
+}
+
+
+
+# Coordinate decent algorithm for LASSO
+cd.elastic <- function(x, y, lambda, alpha){
+  # CD algorithm for lasso      
+  # marginal standardization of x
+  z <- scale(x); 
+  m <- attr(z, "scaled:center"); 
+  s <- attr(z, "scaled:scale")
+  
+  # centering of y
+  u <- (y - mean(y))
+  # initialization
+  beta <- coef(lm(u ~ z - 1)); r <- u - z %*% beta
+  for (iter in 1:100){
+     new.beta <- beta
+     for (j in 1:ncol(x)) {
+        temp <- beta[j] + crossprod(z[,j], r)/nrow(x)
+        new.beta[j] <- S(temp, lambda*alpha)/(1+lambda*(1-alpha)) 
+        r <- r - (new.beta[j] - beta[j]) * z[,j]
+      }
+      delta <- max(abs(new.beta - beta))
+      if (delta < 1.0e-5) break
+      beta <- new.beta
+    }
+  beta <- new.beta/s ; beta0 <- mean(y) - crossprod(beta, m)
+  obj <- list(beta = c(beta0,beta))
+  return(obj)
+}
+```
+
+
+```{r}
+prediction_error_elastic <- function(x.test,y.test,object){
+  y.pred <- x.test %*% matrix(object$beta[2:(ncol(x)+1)],ncol=1) +
+    object$beta[1]
+  mse <- mean((y.pred-y.test)^2)
+  return(mse)
+}
+```
+
+
+```{r}
+test.lambda <- seq(0,1,by=0.001)
+test.alpha <- seq(0,1,by=0.05)
+n <- length(test.lambda)
+p <- length(test.alpha)
+
+MSE_storage <- matrix(0,ncol=p,nrow=n)
+
+for(i in 1:n){
+  for(j in 1:p){
+    CD.ELASTIC <- cd.elastic(x,y,lambda=test.lambda[i],alpha=test.alpha[j])
+    MSE_storage[i,j] <- prediction_error_elastic(x.test,y.test,CD.ELASTIC)
+  }
+}
+
+min(MSE_storage)
+
+
+best_lambda <- test.lambda[which(MSE_storage ==min(MSE_storage) , arr.ind = TRUE)[1]]
+best_alpha <- test.alpha[which(MSE_storage ==min(MSE_storage), arr.ind = TRUE)[2]]
+print(best_lambda); print(best_alpha)
+```
+
+```{r}
+test.lambda2 <- seq(0,1,by=0.001)
+n <- length(test.lambda2)
+
+MSE_storage <- matrix(0,ncol=1,nrow=n)
+
+for(i in 1:n){
+    CD.ELASTIC <- cd.elastic(x,y,lambda=test.lambda2[i],alpha=0.5)
+    MSE_storage[i,1] <- prediction_error_elastic(x.test,y.test,CD.ELASTIC)
+}
+
+min(MSE_storage)
+
+
+best_lambda <- test.lambda[which(MSE_storage == min(MSE_storage) ,
+                                 arr.ind = TRUE)[1]]
+best_lambda
+```
+
+
+## (b)
+
+```{r}
+# with given dataset
+cd.elastic(x,y,0.026,1)$beta
+```
+
+```{r}
+library(glmnet)
+
+model<-glmnet(x,y,alpha=1,lambda = 0.026)
+
+# same result with "cd.elastic" function
+model$beta
+```
+
+
+
+```{r}
+library(glmnet)
+lambda_values <- seq(0,1,by=0.001)
+mse_list <- numeric(length(lambda_values))
+
+for (i in seq_along(lambda_values)) {
+  model <- glmnet(x, y, alpha=0.5, lambda=lambda_values[i])
+  y_pred<- predict(model, newx=x.test)
+  mse_list[i] <- mean((y.test - y_pred)^2)
+}
+
+min_mse_idx <- which.min(mse_list)
+lambda_min <- lambda_values[min_mse_idx]
+min_mse <- mse_list[min_mse_idx]
+
+cat("\nLambda_Min:", lambda_min, "\nMin_MSE:", min_mse)
+```
+
+```{r}
+# MSE vs Lambda graph
+plot(lambda_values, mse_list, col = "blue", lwd = 2,
+     xlab = "Lambda", ylab = "Test MSE", main = "Test MSE vs. Lambda")
+points(lambda_min, min_mse, col = "red", pch = 19, cex = 1.5)
+text(lambda_min, min_mse, labels = sprintf("Min MSE at Lambda=%.4f", lambda_min), pos = 4, col = "red")
+```
+
+
+
+
+
+
+
+
