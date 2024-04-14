@@ -3,18 +3,33 @@ import requests
 import xmltodict       
 import pandas as pd
 
-serviceKey = 'ebl8Ut%2FJ2dsO84047u5ZUjBH53zpBM3YTtMLdGH0FkE6Ukn1z8Hy9WN45TvTQ%2BbdBRQctFDMT7GBZHqttCA8yg%3D%3D'
+key_dict= {1:'ebl8Ut%2FJ2dsO84047u5ZUjBH53zpBM3YTtMLdGH0FkE6Ukn1z8Hy9WN45TvTQ%2BbdBRQctFDMT7GBZHqttCA8yg%3D%3D',
+           2: 'tw9YAMc7ScIfLsmDvIBJDSQFb59kshmdP%2Fl1uVN1gcTrxMlpolbhY6ZvdXznBmwW4fbSe3yMfQZwzRyIRtsU7g%3D%3D'}
+key_dict[1]
 
-def get_df(lawd_cd, deal_ymd, servicekey = serviceKey):
-    global serviceKey
-    base_url = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade?serviceKey="+serviceKey
+
+def make_url(lawd_cd, deal_ymd, key_num):
+    base_url = "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey="+ key_dict[key_num]
+    base_url += '&pageNo=1&numOfRows=2000'
     base_url += f'&LAWD_CD={lawd_cd}'
     base_url += f'&DEAL_YMD={deal_ymd}'
+    return base_url
+
+def get_df(lawd_cd, deal_ymd, key_num = 1):
+    import requests
+    import json
+    import pandas as pd
+    global key_dict
+    base_url= make_url(lawd_cd, deal_ymd, key_num)
     
     try:
         res = requests.get(base_url)
         data = json.loads(json.dumps(xmltodict.parse(res.text)))
-        
+        result_code = data.get('response', {}).get('header').get('resultCode')
+        #if result_code == '99':
+        #    msg = data.get('response', {}).get('header').get('resultMsg')
+        #   return msg
+        #else :
         # items가 None이거나 'item' 키가 없는 경우를 처리
         items = data.get('response', {}).get('body', {}).get('items', None)
         if items is None or 'item' not in items:
@@ -35,10 +50,11 @@ def get_df(lawd_cd, deal_ymd, servicekey = serviceKey):
         return None
 
 # 데이터 저장하기 
-def save_data(engine, loc_code, year_month):
-    df = get_df(loc_code, year_month)
+def save_data(engine, loc_code, year_month, key_num):
+    df = get_df(loc_code, year_month, key_num)
     if df is not None:
-        df.to_sql('apt_trades', con=engine, if_exists='append', index=False)
+        df.to_sql('apt_trades_detail', con=engine, if_exists='append', index=False)
+    #elif : df == 
     else : 
         print(f"No data is saved in loc_code : {loc_code}")
     return df
@@ -46,21 +62,26 @@ def save_data(engine, loc_code, year_month):
 
 # 지역별, 월별 생성하기
 
-def save_all(engine, loc_list, month_list):
+def save_all(engine, loc_list, month_list, key_num):
     for month in month_list :
         for code in loc_list:
-            save_data(engine, code, month)
+            save_data(engine, code, month, key_num)
         print(f"{month} data is saved")
 
 
 # 지역구 코드 생성기
-def loc_code(loc = "seoul"):
-    loc_dict = {"seoul": 1}
+def loc_code(loc = "all"):
+    loc_dict = {"seoul": 1, "all" : "all"}
     import pandas as pd
     data = pd.read_csv('법정동코드 전체자료.txt', sep='\t', encoding='cp949')
     loc_code_total = data['법정동코드'].astype(str).str[:5]
     all_code = loc_code_total.unique()
-    code = [int(i) for i in all_code if i.startswith(str(loc_dict[loc]))]
+
+    if loc_dict[loc] == 'all' :
+        code = [int(i) for i in all_code]
+    else:
+        code = [int(i) for i in all_code if i.startswith(str(loc_dict[loc]))]
+    
     filtered_code = [num for num in code if num % 1000 != 0]
 
     return filtered_code
