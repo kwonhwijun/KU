@@ -36,7 +36,7 @@ cd.elastic <- function(x, y, alpha, lambda){
     new.beta <- beta
     for (j in 1:p) {
       temp <- beta[j] + crossprod(z[,j], r)/n
-      new.beta[j] <- S(temp, (lambda * alpha) / s[j])/ (1+ lambda * (1 - alpha)) # S(temp, (alpha +))
+      new.beta[j] <- S(temp, (lambda * alpha))/ (1+ lambda * (1 - alpha)) # S(temp, (alpha +))
       r <- r - (new.beta[j] - beta[j]) * z[,j]
     }
     delta <- max(abs(new.beta - beta))
@@ -48,6 +48,10 @@ cd.elastic <- function(x, y, alpha, lambda){
 }
 ```
 ### Grid Search
+```{r}
+seq(-4, -1, length.out =100)
+
+```
 ```{r}
 lambda_values <-10^seq(-4, -1, length.out =100)
 mse_results <- numeric(length(lambda_values))
@@ -98,7 +102,7 @@ lambda <- 10^seq(-4, 0, length.out = 100)
 mse_list <- numeric(length(lambda_values))
 
 for (i in seq_along(lambda_values)) {
-  model <- glmnet(x, y, alpha=0.5, lambda=lambda_values[i])
+  model <- glmnet(x, y, alpha=0.5, standardize =  F,  lambda=lambda_values[i])
   y_pred<- predict(model, s=lambda[i], newx=x.test)
   mse_list[i] <- mean((y.test - y_pred)^2)
 }
@@ -108,6 +112,8 @@ lambda_min <- lambda_values[min_mse_idx]
 min_mse <- mse_list[min_mse_idx]
 
 cat("\nLambda_Min:", lambda_min, "\nMin_MSE:", min_mse)
+
+
 
 ```
 
