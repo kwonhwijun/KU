@@ -20,6 +20,7 @@ def get_df(lawd_cd, deal_ymd):
     import requests
     import json
     import pandas as pd
+    import xmltodict
     base_url= make_url(lawd_cd, deal_ymd)
     
     try:
