@@ -1,0 +1,23 @@
+---
+title: "Midterm ST509"
+author: "Hwijun Kwon"
+date: "2024-04-11"
+output: pdf_document
+---
+
+# 1. Introduction
+$y_i |x_i  Poisson(\mu_{\beta}(x_i)$
+```{r}
+
+
+```
+
+# 2. Competing Methods 
+```{r}
+```
+# 3. Simulation Set up
+
+```{r}
+```
+# 4. Result
+# 5. Discussion
