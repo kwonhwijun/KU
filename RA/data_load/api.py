@@ -51,10 +51,10 @@ def get_df(lawd_cd, deal_ymd):
         return None
 
 # 데이터 저장하기 
-def save_data(engine, loc_code, year_month):
+def save_data(engine, tab_name, loc_code, year_month):
     df = get_df(loc_code, year_month)
     if df is not None:
-        df.to_sql('apt_trades_detail', con=engine, if_exists='append', index=False)
+        df.to_sql(f'{tab_name}', con=engine, if_exists='append', index=False)
     #elif : df == 
     else : 
         print(f"No data is saved in loc_code : {loc_code}")
@@ -63,10 +63,10 @@ def save_data(engine, loc_code, year_month):
 
 # 지역별, 월별 생성하기
 
-def save_all(engine, loc_list, month_list):
+def save_all(engine, tab_name, loc_list, month_list):
     for month in month_list :
         for code in loc_list:
-            save_data(engine, code, month)
+            save_data(engine, tab_name, code, month)
         print(f"{month} data is saved")
 
 
