@@ -1,0 +1,223 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Midterm ST509},
+  pdfauthor={Hwijun Kwon},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Midterm ST509}
+\author{Hwijun Kwon}
+\date{2024-04-11}
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction}{%
+\section{1. Introduction}\label{introduction}}
+
+\#y\_i \textbar x\_i \sim{} Poisson(\mu\emph{\{\beta\}(x\_i))
+\textbackslash{} \#log(\mu}\beta{(x_i)}) = \beta\emph{0 + \beta\^{}TX
+\#-\frac{1}{N} \sum\^{}\{N\}}\{i=1\}\{\{y\_\{i\}(\beta\_0 +
+\beta\^{}Tx\_i) - e\^{}\{\beta\_0+\beta\^{}Tx\_i\}\}\} +
+\lambda \textbar\textbar{}\beta\textbar\textbar\_1
+
+When the response variable Y is nonnegative and represents a count, its
+mean will be positive and the Poisson likelihood is often used for
+inference
+
+The l\_\{1\}-penalized negative log-likelihood is given by
+
+Typically, We do not penalize the intercept \beta\_0. It is easy to see
+that this enforces the constraint that the average fitted value is equal
+to the mean response : \#\[\bar{y} = \frac{1}{N}\sum(\hat{\mu_i})\]
+
+\hypertarget{competing-methods}{%
+\section{2. Competing Methods}\label{competing-methods}}
+
+\hypertarget{unpenalized-poisson-regression}{%
+\subsection{1. Unpenalized Poisson
+Regression}\label{unpenalized-poisson-regression}}
+
+log(\mu\_\beta{(x_i)}) = \beta\emph{0 + \beta\^{}\{TX\} \textbackslash{}
+\mu}\beta{(x_i)} = \lambda\_i = exp(\beta\_0 + \beta\^{}\{TX\})
+\textbackslash{}
+
+P(Y = y\_i \textbar{} X=x\_i)
+=\frac{\exp^{\lambda_i} \lambda_i}{y_i!}\^{}\{y\_i\} \textbackslash{} =
+\frac{\exp^{-exp(\beta_0 + \beta^TX)} *exp(\beta_0 + \beta^TX)}{y_i!}\^{}\{y\_i\}
+\textbackslash{} X\_i\beta = \beta\_0 + \beta\^{}TX\_i \textbackslash{}
+L(\beta) = \prod\emph{1\^{}n
+\frac{e^{-exp(X_i\beta)} exp(X_i\beta)^{y_i}}{y_i!} \textbackslash{}
+l(\beta) = \sum\emph{1\^{}n -exp(X\_i\beta) + \sum y\_i(X\_i\beta) -
+\sum log(y\_i) \textbackslash{} \beta}\{OLS\} =
+argmin}\{\beta\}l'(\beta)
+
+Poisson Regression Solves
+
+\hypertarget{ridge-solves}{%
+\subsubsection{2. Ridge Solves}\label{ridge-solves}}
+
+\#\hat{\beta}\_\{ridge\} =
+argmin\frac{1}{N}\sum(y\_i-\beta\_0-\beta\textsuperscript{Tx\_i)}2 +
+\frac{\lambda}{2} \textbar\textbar{}\beta\textbar\textbar\^{}2\_2
+
+\hypertarget{lasso-solves}{%
+\subsubsection{3. Lasso Solves}\label{lasso-solves}}
+
+\#\hat{\beta}\_\{ridge\} =
+argmin\frac{1}{N}\sum(y\_i-\beta\_0-\beta\textsuperscript{Tx\_i)}2 +
+\frac{\lambda}{2} \textbar\textbar{}\beta\textbar\textbar\_1
+
+\hypertarget{elastic-net}{%
+\subsubsection{3. Elastic Net}\label{elastic-net}}
+
+\hypertarget{section}{%
+\subsubsection{4.}\label{section}}
+
+\hypertarget{simulation-set-up}{%
+\section{3. Simulation Set up}\label{simulation-set-up}}
+
+\hypertarget{generating-data}{%
+\subsection{1. Generating Data}\label{generating-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(MASS)}
+\NormalTok{generate\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n, beta, beta0, p, nu) \{}
+\NormalTok{  mu }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, p)}
+\NormalTok{  sigma }\OtherTok{\textless{}{-}} \FunctionTok{outer}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{p, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{p, }\AttributeTok{FUN =} \ControlFlowTok{function}\NormalTok{(i, j) nu}\SpecialCharTok{\^{}}\NormalTok{(}\FunctionTok{abs}\NormalTok{(i}\SpecialCharTok{{-}}\NormalTok{j)))}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\AttributeTok{n=}\NormalTok{n, }\AttributeTok{mu=}\NormalTok{mu, }\AttributeTok{Sigma=}\NormalTok{sigma)}
+\NormalTok{  mu\_x }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(beta0 }\SpecialCharTok{+}\NormalTok{ x }\SpecialCharTok{\%*\%}\NormalTok{ beta)}
+\NormalTok{  y }\OtherTok{\textless{}{-}} \FunctionTok{rpois}\NormalTok{(n, mu\_x)}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y))}
+\NormalTok{\}}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2024020409}\NormalTok{)}
+\NormalTok{train\_data }\OtherTok{\textless{}{-}} \FunctionTok{generate\_data}\NormalTok{(}\DecValTok{500}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\FloatTok{0.7}\NormalTok{)}
+\NormalTok{test\_data }\OtherTok{\textless{}{-}} \FunctionTok{generate\_data}\NormalTok{(}\DecValTok{500}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{poisson\_fit }\OtherTok{\textless{}{-}}\NormalTok{ glmnet}\SpecialCharTok{::}\FunctionTok{glmnet}\NormalTok{(train\_data}\SpecialCharTok{$}\NormalTok{x, train\_data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{family=}\FunctionTok{poisson}\NormalTok{(}\AttributeTok{link=}\StringTok{"log"}\NormalTok{), }\AttributeTok{alpha =} \DecValTok{1}\NormalTok{)}
+
+\NormalTok{predictions }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(poisson\_fit, }\AttributeTok{newx=}\NormalTok{test\_data}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{type=}\StringTok{"response"}\NormalTok{)}
+
+\NormalTok{mse }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{((test\_data}\SpecialCharTok{$}\NormalTok{y }\SpecialCharTok{{-}}\NormalTok{ predictions)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{variance }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(predictions)}
+\NormalTok{mean\_prediction }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(predictions)}
+\NormalTok{bias }\OtherTok{\textless{}{-}}\NormalTok{ mean\_prediction }\SpecialCharTok{{-}} \FunctionTok{mean}\NormalTok{(test\_data}\SpecialCharTok{$}\NormalTok{y)}
+
+\CommentTok{\#list(MSE = mse, Variance = variance, Bias = bias)}
+\CommentTok{\#predictions}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{result}{%
+\section{4. Result}\label{result}}
+
+\hypertarget{discussion}{%
+\section{5. Discussion}\label{discussion}}
+
+\end{document}

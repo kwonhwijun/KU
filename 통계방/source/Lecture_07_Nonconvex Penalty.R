@@ -27,9 +27,13 @@ mcp.update = function(z, lambda, gamma){ # MCP
 ## ---- echo = F-------------------------------------------------------------------------------------------
 # coordinate decent algorithm
 ncv <- function(x, y, lambda, type = "lasso", a = 3.7, init = rep(0, p), max.iter = 100, eps = 1.0e-8){
-  n <- length(y); p <- ncol(x)
-  x <- scale(x); m <- attr(x, "scaled:center"); s <- attr(x, "scaled:scale")
-  my <- mean(y); y <- (y - my)    # centering of y
+  n <- length(y)
+  p <- ncol(x)
+  x <- scale(x)
+  m <- attr(x, "scaled:center")
+  s <- attr(x, "scaled:scale")
+  my <- mean(y)
+  y <- (y - my)    # centering of y
   beta <- init    # initialize beta
   r <- (y - x %*% beta)    # residual
   if (type == "lasso") {
@@ -42,14 +46,17 @@ ncv <- function(x, y, lambda, type = "lasso", a = 3.7, init = rep(0, p), max.ite
   for (t in 1:max.iter){    # start update
     new.beta <- beta
     for (j in 1:p){
-      xj <- 1/n * crossprod(x[,j],  r) + beta[j]; new.beta[j] <- update.ft(xj, lambda/s[j]) 
+      xj <- 1/n * crossprod(x[,j],  r) + beta[j]
+      new.beta[j] <- update.ft(xj, lambda/s[j]) 
       r <- r - (new.beta[j] - beta[j]) * x[,j]  
     }
     if (max(abs(beta - new.beta)) < eps) break
     beta <- new.beta
   }
-  beta <- beta / s[j]; beta0 <- my - m %*% beta    # transform back
-  index <- which(abs(beta) > eps); beta.info <- beta[index]
+  beta <- beta / s[j]
+  beta0 <- my - m %*% beta    # transform back
+  index <- which(abs(beta) > eps)
+  beta.info <- beta[index]
   obj = list(intercept = beta0,beta = beta.info, index = index)
 }
 

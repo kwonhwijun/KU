@@ -6,18 +6,85 @@ output: pdf_document
 ---
 
 # 1. Introduction
-$y_i |x_i  Poisson(\mu_{\beta}(x_i)$
-```{r}
 
 
-```
+#y_i |x_i \sim{} Poisson(\mu_{\beta}(x_i)) \\
+#log(\mu_\beta{(x_i)}) = \beta_0 + \beta^TX
+#-\frac{1}{N} \sum^{N}_{i=1}\{{y_{i}(\beta_0 + \beta^Tx_i) - e^{\beta_0+\beta^Tx_i}}\} + \lambda ||\beta||_1
 
-# 2. Competing Methods 
-```{r}
-```
+
+When the response variable Y is nonnegative and represents a count, its mean will be positive and the Poisson likelihood is often used for inference
+
+The l_{1}-penalized negative log-likelihood is given by
+
+Typically, We do not penalize the intercept \beta_0. It is easy to see that this enforces the constraint that the average fitted value is equal to the mean response : 
+#$$\bar{y} = \frac{1}{N}\sum(\hat{\mu_i})$$
+
+
+# 2. Competing Methods
+
+## 1. Unpenalized Poisson Regression
+
+log(\mu_\beta{(x_i)}) = \beta_0 + \beta^{TX} \\
+\mu_\beta{(x_i)} = \lambda_i = exp(\beta_0 + \beta^{TX}) \\
+
+
+P(Y = y_i | X=x_i) =\frac{\exp^{\lambda_i} \lambda_i}{y_i!}^{y_i} \\
+= \frac{\exp^{-exp(\beta_0 + \beta^TX)} *exp(\beta_0 + \beta^TX)}{y_i!}^{y_i} \\
+X_i\beta = \beta_0 + \beta^TX_i \\
+L(\beta) = \prod_1^n \frac{e^{-exp(X_i\beta)} exp(X_i\beta)^{y_i}}{y_i!} \\
+l(\beta) = \sum_1^n -exp(X_i\beta) + \sum y_i(X_i\beta) - \sum log(y_i) \\
+\beta_{OLS} = argmin_{\beta}l'(\beta) 
+
+Poisson Regression Solves
+
+### 2. Ridge Solves
+
+#\hat{\beta}_{ridge} = argmin\frac{1}{N}\sum(y_i-\beta_0-\beta^Tx_i)^2 + \frac{\lambda}{2} ||\beta||^2_2
+
+### 3. Lasso Solves
+
+#\hat{\beta}_{ridge} = argmin\frac{1}{N}\sum(y_i-\beta_0-\beta^Tx_i)^2 + \frac{\lambda}{2} ||\beta||_1
+
+### 3. Elastic Net
+
+### 4.
+
+
+
 # 3. Simulation Set up
 
-```{r}
+## 1. Generating Data
+
+```{r Data Generating}
+library(MASS)
+generate_data <- function(n, beta, beta0, p, nu) {
+  mu <- rep(0, p)
+  sigma <- outer(1:p, 1:p, FUN = function(i, j) nu^(abs(i-j)))
+  x <- mvrnorm(n=n, mu=mu, Sigma=sigma)
+  mu_x <- exp(beta0 + x %*% beta)
+  y <- rpois(n, mu_x)
+  return(list(x = x, y = y))
+}
+set.seed(2024020409)
+train_data <- generate_data(500, c(1, 1, 1), 1, 3, 0.7)
+test_data <- generate_data(500, c(1, 1, 1), 1, 3, 0.7)
 ```
+
+```{r}
+poisson_fit <- glmnet::glmnet(train_data$x, train_data$y, family=poisson(link="log"), alpha = 1)
+
+predictions <- predict(poisson_fit, newx=test_data$x, type="response")
+
+mse <- mean((test_data$y - predictions)^2)
+variance <- var(predictions)
+mean_prediction <- mean(predictions)
+bias <- mean_prediction - mean(test_data$y)
+
+#list(MSE = mse, Variance = variance, Bias = bias)
+#predictions
+```
+
 # 4. Result
+
 # 5. Discussion

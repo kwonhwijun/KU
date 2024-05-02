@@ -6,3 +6,11 @@ def db2excel(engine, table_name, file_name):
 
 # db2excel(engine_06_10, "apt_trades", "apt_06_10")
 
+
+def execute_query(my_query, eng):
+    from sqlalchemy import create_engine, text
+    conn = eng.connect()
+    query = text(f'{my_query}')
+    result = conn.execute(query)
+    conn.close()
+    return result 
